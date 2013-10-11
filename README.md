@@ -6,7 +6,7 @@ It has been done only using native Java swing objects. As an example, each cell 
 The folder contains :
 
 *	The runnable application as a JAR
-*	The runnaple OSX app
+*	The runnaple OSX app in a zip file
 *	All source code in Minesweeper folder
 
 ___
