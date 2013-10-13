@@ -8,6 +8,8 @@ Indeed, in this project no image were used. Each cell is represented by a JButto
 
 On the left side of the "Start again" button there is the counter of bombs that still need to be discovered. On the other side it is just a timer to get some pressure.
 
+You can flag a cell if you think there is a bomb on it. You can do it with alt+click, cmd+click, maj+click, ... (everything that is not a regular click).
+
 There are a few options from the menu bar such as difficulty or size.
 
 The folder contains :
