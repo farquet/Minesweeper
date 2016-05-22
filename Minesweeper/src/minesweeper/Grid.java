@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -20,13 +21,14 @@ public class Grid
 	private int nbBombs;
 	private Cell[][] cells;
 	private boolean finished;
+	private boolean builded;
 	
 	public Grid(int nbRow, int nbCol, int nbBombs, JLabel label)
 	{		
 		this.nbRow = nbRow;
 		this.nbCol = nbCol;
 		this.nbBombs = nbBombs;
-		
+		builded = false;
 		cells = new Cell[nbRow][nbCol];
 		
 		for(int i=0; i < nbRow; i++)
@@ -37,23 +39,27 @@ public class Grid
 		
 		label.setText(""+(Settings.nbBombs-Settings.flagCount));
 		
-		placeBombs();
-		findNearBombs();
 	}
 	
-	private void placeBombs()
+	public void buildNewGame(int notAvailableRow,int notAvailableCol){
+
+		placeBombs( notAvailableRow, notAvailableCol);
+		findNearBombs();
+		builded = true;
+	}
+	
+	private void placeBombs(int notAvailableRow,int notAvailableCol)
 	{
 		Random rand = new Random();
-		
+		int randRow, randCol;
 		for(int i=0; i < nbBombs; i++)
 		{
-			int randRow, randCol;
 			do
 			{
 				randRow = rand.nextInt(nbRow);
 				randCol = rand.nextInt(nbCol);
 			}
-			while(cells[randRow][randCol].getBomb());
+			while(cells[randRow][randCol].getBomb() || (randRow==notAvailableRow && notAvailableCol==randCol));
 			
 			cells[randRow][randCol].setBomb();
 		}
@@ -140,12 +146,17 @@ public class Grid
 	{
 		finished = true;
 		Settings.hasStarted = false;
+		builded = false;
 		viewBombs();
 	}
 	
 	public boolean finished()
 	{
 		return finished;
+	}
+	public boolean builded()
+	{
+		return builded;
 	}
 	
 	public boolean check() // return true if the player has won
@@ -169,7 +180,11 @@ public class Grid
 	{
 		for(int i=0; i < nbRow; i++)
 			for(int j=0; j < nbCol; j++)
-				if(cells[i][j].getBomb())
-					cells[i][j].getCase().setText("X");
+				if(cells[i][j].getBomb()){
+					//cells[i][j].getCase().setText("X");
+					 ImageIcon mine_icon = new ImageIcon("imgs/mine.png");
+					 cells[i][j].getCase().setIcon(mine_icon);
+						
+				}
 	}
 }

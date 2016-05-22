@@ -40,7 +40,7 @@ public class RestartAction implements ActionListener
 		time.setText("0");
 		Settings.hasStarted = false;
 		
-		frame.setSize(Settings.frameSize, Settings.frameSize);
+		frame.setSize(Settings.nbCol*30, Settings.nbRow*30);
 		restart.setText("Start again");
 	}
 	
