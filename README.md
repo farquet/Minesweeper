@@ -1,6 +1,6 @@
 #Minesweeper
 
-![Minesweeper game screenshot](http://francois.farquet.com/images/projects/screenshot-minesweeper.png)
+![Minesweeper game screenshot](MinesweeperSnap.png)
 
 This is a simple minesweeper game. It is developped for the Mac OSX JVM. This illustrates how nice look native elements on this JVM compared to the Windows JVM.
 Indeed, in this project no image were used. Each cell is represented by a JButton. We use the disabled state of a button if the cell and its neighbours contain no bomb.
