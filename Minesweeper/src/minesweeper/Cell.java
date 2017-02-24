@@ -7,9 +7,15 @@ package minesweeper;
 
 import java.awt.Color;
 
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.plaf.ButtonUI;
+import javax.swing.plaf.basic.BasicButtonUI;
 
 public class Cell
 {
@@ -22,11 +28,16 @@ public class Cell
 	private int row;
 	private int col;
 	private Grid grid;
+	static final int cell_size = 10;
 	
 	public Cell(Grid grid, int row, int col, JLabel bombsLeft)
 	{
 		aCase = new JButton("");
-		aCase.setBackground(Color.GRAY);
+		aCase.setUI((ButtonUI) BasicButtonUI.createUI(aCase));
+		aCase.setBackground(Color.gray);
+		aCase.setBorder(BorderFactory.createCompoundBorder(
+	               BorderFactory.createLineBorder(Color.BLACK, 0),
+	               BorderFactory.createLineBorder(Color.BLACK, 1)));
 		this.row = row;
 		this.col = col;
 		this.grid = grid;
@@ -45,22 +56,34 @@ public class Cell
 	
 	public void setVisible()
 	{
-		if(!visible)
+		if(!visible && !flagged)
 		{
 			if(bomb)
 			{
-				aCase.setText("X");
+				bombsLeft.setText(String.valueOf(Settings.nbBombs - Settings.flagCount));
+				aCase.setBackground(Color.RED);
+				
 				Settings.flagCount++;
-				bombsLeft.setText(""+(Settings.nbBombs - Settings.flagCount));
 				grid.setFinished();
-				JOptionPane.showMessageDialog(null,"Boooom !!!");
+
+		        final ImageIcon icon = new ImageIcon("imgs/explosion.png");
+		        Object[] options = {"Show the field"};
+
+				JFrame frame = new JFrame();
+		        JOptionPane.showOptionDialog(frame,"", "Boooom !!!",JOptionPane.YES_NO_CANCEL_OPTION,
+		        	    JOptionPane.QUESTION_MESSAGE, icon,options,options[0]);
+		        
+		        //if(choise == 0){
+		        	//restart.leftButton.doClick();
+		        	
+		      //  }
 			}
 			else
 			{
 				if(flagged)
 				{
 					Settings.flagCount--;
-					bombsLeft.setText(""+(Settings.nbBombs - Settings.flagCount));
+					bombsLeft.setText(String.valueOf(Settings.nbBombs - Settings.flagCount));
 				}
 				
 				Color caseColor;
@@ -94,12 +117,16 @@ public class Cell
 				default :
 					disableCase();
 					caseColor = Color.DARK_GRAY;
+					
 				}
-				if(bombNumberAround != 0)
-				{
-					aCase.setText(bombNumberAround+"");
+				if(bombNumberAround != 0){
+					aCase.setOpaque(true);
+					aCase.setText(String.valueOf(bombNumberAround));
+					//aCase.setBackground(Color.YELLOW);
 					aCase.setForeground(caseColor);
 				}
+
+				aCase.setBackground(Color.lightGray);
 			}
 			visible = true;
 			
@@ -124,19 +151,22 @@ public class Cell
 		if(!flagged)
 		{
 			flagged = true;
-			aCase.setText("F");
+			//aCase.setText("F");
+			ImageIcon flag_icon = new ImageIcon("imgs/flag.png");
+			aCase.setIcon(flag_icon);
 			Settings.flagCount++;
 			bombsLeft.setText(""+(Settings.nbBombs - Settings.flagCount));
 		}
 		else
 		{
 			flagged = false;
-			aCase.setText("");
+			//aCase.setText("");
+			aCase.setIcon(null);
 			Settings.flagCount--;
 			bombsLeft.setText(""+(Settings.nbBombs - Settings.flagCount));
 		}
 	}
-	
+
 	public boolean getFlaged()
 	{
 		return flagged;

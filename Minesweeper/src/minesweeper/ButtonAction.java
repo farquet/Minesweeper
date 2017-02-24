@@ -21,7 +21,8 @@ public class ButtonAction implements MouseListener
 	}
 
 	public void mouseClicked(MouseEvent e)
-	{	
+	{	if(!grid.builded())
+			grid.buildNewGame(aCell.getRow(), aCell.getCol());
 		if(!grid.finished())
 		{
 			Settings.hasStarted = true;
